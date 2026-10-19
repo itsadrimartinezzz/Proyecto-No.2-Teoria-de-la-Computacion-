@@ -1,12 +1,7 @@
-# Proyecto 2: conversión a CNF y algoritmo CYK
-
-Programa de consola en Python que lee una gramática, la convierte a la Forma
-Normal de Chomsky (CNF) y decide si una entrada pertenece a su lenguaje.
-Muestra SÍ o NO, el tiempo de validación y un árbol de análisis cuando existe.
+# Proyecto 2
 
 ## Cómo ejecutarlo
 
-Necesitas Python 3.10 o posterior. No requiere instalar paquetes con pip.
 Abre una terminal en la carpeta del proyecto y ejecuta:
 
 ```powershell
@@ -74,13 +69,6 @@ gramática no la genera, el resultado será NO.
 
 El flujo sigue este orden:
 
-```text
-Archivo TXT -> lectura de reglas -> simplificación -> CNF
-                                                       |
-Frase -> separación en símbolos ----------------------> CYK
-                                                       |
-                                    resultado + tiempo + árbol
-```
 
 | Archivo | Responsabilidad |
 | --- | --- |
@@ -92,9 +80,7 @@ Frase -> separación en símbolos ----------------------> CYK
 | `grammars/1-cnf.txt` | Gramática aritmética en CNF proporcionada como referencia. |
 | `tests/test_project.py` | Pruebas automáticas de conversión y reconocimiento. |
 
-Se usan funciones y estructuras básicas de Python: diccionarios, conjuntos,
-listas y tuplas. No hay herencia ni clases en los algoritmos. La única clase
-está en las pruebas, porque es el formato habitual de `unittest`.
+La única clase está en las pruebas, porque es el formato habitual de `unittest`.
 
 Una gramática se representa así:
 
@@ -167,7 +153,7 @@ La cadena vacía se resuelve por separado comprobando la regla de epsilon inicia
 Se crean dos índices: uno para terminales y otro para pares de variables. Así,
 cada combinación consulta únicamente las reglas correspondientes. Para una
 gramática fija, el tiempo crece como `O(n³)` y el espacio como `O(n²)`, con `n`
-igual al número de símbolos de entrada. La conversión tiene un costo aparte:
+igual al número de símbolos de entrada. La conversión tiene un costo aparte que es
 omitir muchas apariciones anulables puede generar numerosas combinaciones.
 
 ## Árbol de análisis y tiempo
@@ -192,9 +178,7 @@ S
 ```
 
 El tiempo se obtiene con `perf_counter` y se presenta en milisegundos. Incluye
-crear los índices, llenar la tabla y reconstruir el árbol. Excluye leer el
-archivo, convertir la gramática, esperar la entrada e imprimir resultados.
-En frases cortas el tiempo es muy pequeño y cambia entre ejecuciones.
+crear los índices, llenar la tabla y reconstruir el árbol.
 
 ## Ejemplos y pruebas realizadas
 
@@ -219,40 +203,15 @@ Para ejecutar las pruebas:
 python -m unittest discover -s tests -v
 ```
 
-Se ejecutaron **15 pruebas automáticas y todas pasaron**. Cubren las frases de
-la tabla, las frases escritas como en el enunciado, las dos gramáticas aritméticas, los ciclos unitarios, variables
-anulables repetidas, inicio recursivo y anulable, símbolos inútiles, lenguaje
-vacío, epsilon como única palabra, cuerpos mixtos largos, colisiones de nombres,
-gramáticas ambiguas y archivos incorrectos.
+## Pruebas realizadas
 
-Además, las pruebas construyen palabras cortas directamente desde la CFG por
-un procedimiento independiente de CYK. Comparan esas palabras con las de la CNF
-y contrastan la aceptación de CYK con todas las entradas de un alfabeto pequeño
-hasta la longitud elegida. En los ejemplos aritméticos se comparan los lenguajes
-hasta cinco símbolos. Es una comprobación acotada, no una demostración de
-equivalencia para todas las longitudes.
+Se realizaron 15 pruebas automáticas y todas fueron exitosas. Estas pruebas nos ayudaron a comprobar que el programa funciona correctamente en diferentes situaciones, desde frases sencillas en inglés hasta gramáticas más complicadas. También se probaron casos especiales, como reglas repetidas, símbolos que no se utilizan, gramáticas ambiguas y archivos con errores.
+
+Además, se hicieron comparaciones entre la gramática original y su versión en Forma Normal de Chomsky (CNF) para verificar que ambas aceptaran las mismas palabras. También se revisó que el algoritmo CYK diera los resultados esperados. En el caso de las expresiones aritméticas, se probaron combinaciones de hasta cinco símbolos. Aunque estas pruebas no garantizan que todas las frases posibles funcionen, sí nos permiten tener mayor confianza en los resultados del programa.
 
 ## Discusión y recomendaciones
 
-Un punto delicado es distinguir una variable sin producciones útiles de un
-terminal. Durante la limpieza se conservan las claves de las variables hasta
-terminar el análisis de productividad; eliminarlas antes podría cambiar el
-lenguaje por error.
+Durante el desarrollo encontramos algunos casos que necesitaban mucha atención. Uno de ellos fue diferenciar correctamente las variables de los símbolos terminales, ya que eliminar una variable antes de tiempo podía afectar el funcionamiento de la gramática. Otro aspecto importante fue manejar las reglas que contienen símbolos que pueden desaparecer. En estos casos, tuvimos que asegurarnos de considerar todas las combinaciones posibles sin repetir resultados innecesariamente para que el programa fuera más fácil de utilizar y entender, decidimos mostrar el árbol sintáctico con sangrías y organizar la tabla de resultados por intervalos. De esta manera, podemos observar cómo se analiza cada frase sin necesidad de utilizar herramientas gráficas adicionales. Por ahora, el programa muestra un solo árbol por frase aceptada, aunque algunas gramáticas pueden tener más de una interpretación.
 
-Otro caso importante es una producción como `S -> A A B` cuando `A` es anulable.
-Cada aparición se debe poder omitir de manera independiente. Los conjuntos
-evitan duplicados cuando distintas omisiones producen el mismo resultado.
 
-Para mantener sencillo el programa, el árbol se imprime con sangría y la tabla
-por intervalos. Esto permite seguir una derivación sin instalar herramientas
-gráficas. Solo se conserva un árbol por entrada aceptada; enumerar todos los
-árboles de una gramática ambigua requiere otra estrategia de almacenamiento.
-
-Conviene empezar la demostración con `she eats`, continuar con la frase del
-tenedor y luego usar `1.txt` con `--steps`. Así se aprecia por separado el
-reconocimiento y la conversión de una gramática que no está en CNF.
-
-Antes de entregar, completa los datos personales que solicite el curso y revisa
-que puedas explicar cada función. Esta documentación describe el diseño y las
-pruebas del programa; agrega tus propias observaciones de uso a la discusión.
 
