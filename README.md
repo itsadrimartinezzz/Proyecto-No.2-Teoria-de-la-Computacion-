@@ -213,5 +213,8 @@ Además, se hicieron comparaciones entre la gramática original y su versión en
 
 Durante el desarrollo encontramos algunos casos que necesitaban mucha atención. Uno de ellos fue diferenciar correctamente las variables de los símbolos terminales, ya que eliminar una variable antes de tiempo podía afectar el funcionamiento de la gramática. Otro aspecto importante fue manejar las reglas que contienen símbolos que pueden desaparecer. En estos casos, tuvimos que asegurarnos de considerar todas las combinaciones posibles sin repetir resultados innecesariamente para que el programa fuera más fácil de utilizar y entender, decidimos mostrar el árbol sintáctico con sangrías y organizar la tabla de resultados por intervalos. De esta manera, podemos observar cómo se analiza cada frase sin necesidad de utilizar herramientas gráficas adicionales. Por ahora, el programa muestra un solo árbol por frase aceptada, aunque algunas gramáticas pueden tener más de una interpretación.
 
+## Presentación del Proyecto
+
+[Video Explicativo ](link)
 
 
