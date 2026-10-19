@@ -203,7 +203,55 @@ Para ejecutar las pruebas:
 python -m unittest discover -s tests -v
 ```
 
-## Pruebas realizadas
+### Evidencia de las pruebas manuales
+
+En la ejecución interactiva probamos `he cooks`, `she eats a cake with a fork` y
+`the cat drinks the beer`. Las tres fueron aceptadas. En el árbol de la segunda
+frase se puede seguir la combinación del sujeto, el verbo, el objeto y la frase
+preposicional `with a fork`.
+
+![Frase aceptada y árbol completo](Documentación/capturas/01-frase-aceptada-arbol.png)
+
+Después probamos tres errores distintos: `she cake eats` cambia el orden de las
+palabras, `the cat drinks beer` omite el determinante del objeto y `she eats a pizza`
+contiene una palabra ajena a la gramática. Las tres entradas fueron rechazadas y
+el programa indicó que no existía un árbol de análisis.
+
+![Tres entradas rechazadas](Documentación/capturas/02-frases-rechazadas.png)
+
+Para revisar la tabla ejecutamos:
+
+```powershell
+python main.py --sentence "she eats a cake with a fork" --table
+```
+
+`a cake` y `a fork` se reconocen como `NP`, y `with a fork` como `PP`.
+El intervalo final `[1, 7]` contiene `S`, por lo que la frase completa se acepta.
+Las celdas vacías corresponden a fragmentos que ninguna variable puede generar.
+
+![Tabla CYK completa](Documentación/capturas/03-tabla-cyk.png)
+
+También probamos una expresión aritmética incompleta:
+
+```powershell
+python main.py --grammar grammars/1.txt --sentence "id +" --table
+```
+
+Aunque ambos símbolos se reconocen por separado, la celda del intervalo completo
+queda vacía. Falta el operando después de `+` y la expresión se rechaza.
+
+![Expresión aritmética rechazada](Documentación/capturas/04-expresion-rechazada.png)
+
+Los tiempos corresponden a ejecuciones individuales. Por ejemplo, la frase
+`she eats a cake with a fork` tomó 0.076200 ms en el modo interactivo y
+0.059500 ms en la ejecución con tabla. No son promedios ni valores que deban
+repetirse al ejecutar el programa otra vez.
+
+### Pruebas automáticas
+
+La ejecución terminó con `Ran 15 tests` y `OK`, como muestra la captura:
+
+![Las 15 pruebas aprobadas](Documentación/capturas/05-pruebas-automaticas.png)
 
 Se realizaron 15 pruebas automáticas y todas fueron exitosas. Estas pruebas nos ayudaron a comprobar que el programa funciona correctamente en diferentes situaciones, desde frases sencillas en inglés hasta gramáticas más complicadas. También se probaron casos especiales, como reglas repetidas, símbolos que no se utilizan, gramáticas ambiguas y archivos con errores.
 
