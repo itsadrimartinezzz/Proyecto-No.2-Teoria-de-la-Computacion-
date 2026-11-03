@@ -263,6 +263,6 @@ Durante el desarrollo encontramos algunos casos que necesitaban mucha atención.
 
 ## Presentación del Proyecto
 
-[Video Explicativo ]((https://canva.link/mztfvlgyxm2xufs))
+[Video Explicativo ](https://canva.link/mztfvlgyxm2xufs)
 
 
